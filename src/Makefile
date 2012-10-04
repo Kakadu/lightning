@@ -1,9 +1,10 @@
 include ../Makefile.common
 
 CFLAGS += -I .
+VERBOSE=#-verbose
 
 %.o: %.c
-	$(OCAMLOPT) -I . -verbose -g  $(if $(CFLAGS),$(patsubst %,-ccopt %,$(CFLAGS))) -ccopt '-fPIC' -ccopt '-o $@' -c $<
+	$(OCAMLOPT) -I . $(VERBOSE) -g  $(if $(CFLAGS),$(patsubst %,-ccopt %,$(CFLAGS))) -ccopt '-fPIC' -ccopt '-o $@' -c $<
 
 MOBJS = light_common.o texture_common.o texture_pvr.o texture_async_loader.o renderbuffer_stub.o filters_stub.o render_stub.o
 
@@ -108,7 +109,7 @@ MLSOURCES = $(BMLSOURCES) Hardware.ml LocalNotifications.ml Motion.ml ProfTimer.
 #Texture.cmo Texture.cmx: MLFLAGS += -package threads -thread
 
 $(gl)/gl_stub.o: $(gl)/gl_stub.c
-	$(OCAMLOPT) -verbose -g $(if $(GLPARAM),$(patsubst %,-ccopt %,$(GLPARAM))) -ccopt '-o $(gl)/gl_stub.o' -c $(gl)/gl_stub.c
+	$(OCAMLOPT) $(VERBOSE) -g $(if $(GLPARAM),$(patsubst %,-ccopt %,$(GLPARAM))) -ccopt '-o $(gl)/gl_stub.o' -c $(gl)/gl_stub.c
 
 MLCONTAINERS = containers/MList.ml containers/HSet.ml containers/MHashtbl.ml containers/PriorityQueue.ml containers/WeakHashtbl.ml containers/ThreadSafeQueue.ml
 MLUTILS = utils/UrlEncoding.ml
@@ -132,10 +133,10 @@ $(MLOBJS) $(MLOBJSB) MLDepend.$(PLATFORM): syntax/pa_debug.cmo
 	
 
 lightning.cma: MLDepend.$(PLATFORM) $(KAZMATH) $(MLCONTAINERSOBJSB) $(MLUTILSOBJSB) $(MOBJS) $(MLOBJSB)
-	$(OCAMLMKLIB) -verbose -o lightning $(KAZMATH) $(MOBJS) Debug.cmo $(MLCONTAINERSOBJSB) $(MLUTILSOBJSB) $(MLOBJSB) $(LIBFLAGS) 
+	$(OCAMLMKLIB) $(VERBOSE) -o lightning $(KAZMATH) $(MOBJS) Debug.cmo $(MLCONTAINERSOBJSB) $(MLUTILSOBJSB) $(MLOBJSB) $(LIBFLAGS) 
 
 lightning.cmxa: MLDepend.$(PLATFORM) $(KAZMATH) $(MLCONTAINERSOBJS) $(MLUTILSOBJS) $(MOBJS) $(MLOBJS)
-	$(OCAMLMKLIB) -verbose -o lightning $(KAZMATH) $(MOBJS) Debug.cmx $(MLCONTAINERSOBJS) $(MLUTILSOBJS) $(MLOBJS) $(LIBFLAGS) 
+	$(OCAMLMKLIB) $(VERBOSE) -o lightning $(KAZMATH) $(MOBJS) Debug.cmx $(MLCONTAINERSOBJS) $(MLUTILSOBJS) $(MLOBJS) $(LIBFLAGS) 
 
 
 tapjoy.cma:
