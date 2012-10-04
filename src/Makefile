@@ -73,8 +73,8 @@ ifeq ($(PLATFORM),IOS)
 	else
 		CFLAGS += $(shell ${SDLCONFIG} --cflags)
 		MOBJS += net_curl.o sdl/sdl_stub.o sdl/sdl_image_stub.o sdl/texture_sdl.o
-		BMLSOURCES = sdl/sdl.ml sdl/sdl_image.ml 
-		AMLSOURCES = sdl/sdl_run.ml
+		#BMLSOURCES = sdl/sdl.ml sdl/sdl_image.ml 
+		#AMLSOURCES = sdl/sdl_run.ml
 		MLOBJSFLAGS = -I sdl
 		#MLCOMPFLAGS += -package curl,threads -thread
 		SDLFLAGS = $(shell ${SDLCONFIG} --libs)
@@ -130,12 +130,22 @@ $(MLOBJSB): Debug.cmo
 
 $(MLOBJS) $(MLOBJSB) MLDepend.$(PLATFORM): syntax/pa_debug.cmo 
 #include debug.conf
-	
+		
+glutB: 
+	ocamlfind  c -package camlp4,camlp4.macro -syntax camlp4r  -package ojson,extlib -I containers -I utils -package xmlm  -I pc -w +7+9@5@8-13 -warn-error +10 -g  -ppopt syntax/pa_debug.cmo -ppopt -DPC -c pc/glut.ml -o pc/glut.cmo	
 
-lightning.cma: MLDepend.$(PLATFORM) $(KAZMATH) $(MLCONTAINERSOBJSB) $(MLUTILSOBJSB) $(MOBJS) $(MLOBJSB)
-	$(OCAMLMKLIB) $(VERBOSE) -o lightning $(KAZMATH) $(MOBJS) Debug.cmo $(MLCONTAINERSOBJSB) $(MLUTILSOBJSB) $(MLOBJSB) $(LIBFLAGS) 
+glut: 
+	ocamlfind  opt -package camlp4,camlp4.macro -syntax camlp4r  -package ojson,extlib -I containers -I utils -package xmlm  -I pc -w +7+9@5@8-13 -warn-error +10 -g  -ppopt syntax/pa_debug.cmo -ppopt -DPC -c pc/glut.ml -o pc/glut.cmx 
 
-lightning.cmxa: MLDepend.$(PLATFORM) $(KAZMATH) $(MLCONTAINERSOBJS) $(MLUTILSOBJS) $(MOBJS) $(MLOBJS)
+dirty_hack1:
+	ocamlfind  ocamlc -package camlp4,camlp4.macro -syntax camlp4r  -package ojson,extlib -I containers -I utils -package xmlm  -I pc -w +7+9@5@8-13 -warn-error +10 -g  -ppopt syntax/pa_debug.cmo -ppopt -DPC -c $(MLSOURCES)
+
+ALLOBJSB=$(MOBJS) Debug.cmo $(MLCONTAINERSOBJSB) $(MLUTILSOBJSB) $(MLOBJSB)
+lightning.cma: MLDepend.$(PLATFORM) $(KAZMATH) $(ALLOBJSB) glutB dirty_hack1
+	$(OCAMLMKLIB) $(VERBOSE) -o lightning $(KAZMATH) $(ALLOBJSB) 
+
+lightning.cmxa: MLDepend.$(PLATFORM) $(KAZMATH) \
+		$(MLCONTAINERSOBJS) $(MLUTILSOBJS) $(MOBJS) $(MLOBJS) glut
 	$(OCAMLMKLIB) $(VERBOSE) -o lightning $(KAZMATH) $(MOBJS) Debug.cmx $(MLCONTAINERSOBJS) $(MLUTILSOBJS) $(MLOBJS) $(LIBFLAGS) 
 
 
