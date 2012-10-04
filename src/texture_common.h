@@ -3,18 +3,27 @@
 #define __TEXTURE_COMMON_H__
 
 #ifdef ANDROID
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
+ #include <GLES2/gl2.h>
+ #include <GLES2/gl2ext.h>
 #else 
-#ifdef IOS
-#include <OpenGLES/ES2/gl.h>
-#include <OpenGLES/ES2/glext.h>
-#include <sys/types.h>
-#else
-#include <OpenGL/gl.h>
-#define GL_GLEXT_PROTOTYPES
-#include <sys/types.h>
-#endif
+ #ifdef IOS
+    #include <OpenGLES/ES2/gl.h>
+    #include <OpenGLES/ES2/glext.h>
+    #include <sys/types.h>
+ #elif __linux__
+    #define  GL_GLEXT_PROTOTYPES   1
+    #define  GLX_GLXEXT_PROTOTYPES 1
+    #include <GL/gl.h>
+    #include <GL/glext.h>
+    #include <GL/glu.h>
+    #include <GL/glx.h>
+    #include <GL/glxext.h>
+    #include <sys/types.h>
+ #else
+  #include <OpenGL/gl.h>
+  #define GL_GLEXT_PROTOTYPES
+  #include <sys/types.h>
+ #endif
 #endif
 
 #include <caml/mlvalues.h>

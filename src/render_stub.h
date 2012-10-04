@@ -2,16 +2,26 @@
 #define __RENDER_STUB_H_
 
 #ifdef ANDROID
-#define GL_GLEXT_PROTOTYPES
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
+  #define GL_GLEXT_PROTOTYPES
+  #include <GLES2/gl2.h>
+  #include <GLES2/gl2ext.h>
 #else 
-#ifdef IOS
-#include <OpenGLES/ES2/gl.h>
-#else
-#define GL_GLEXT_PROTOTYPES
-#include <OpenGL/gl.h>
-#endif
+  #ifdef IOS
+    #include <OpenGLES/ES2/gl.h>
+  #else
+    #ifdef __linux__
+	#define		GL_GLEXT_PROTOTYPES	1
+	#define		GLX_GLXEXT_PROTOTYPES	1
+	#include	<GL/gl.h>
+	#include	<GL/glext.h>
+	#include	<GL/glu.h>
+	#include	<GL/glx.h>
+	#include	<GL/glxext.h>
+    #else
+        #define GL_GLEXT_PROTOTYPES
+        #include <OpenGL/gl.h>
+    #endif
+  #endif
 #endif
 
 
