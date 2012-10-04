@@ -1,0 +1,22 @@
+type t = { x : float; y : float; width : float; height : float; };
+type tm = {
+  m_x : mutable float;
+  m_y : mutable float;
+  m_width : mutable float;
+  m_height : mutable float;
+};
+value empty : t;
+value create : float -> float -> float -> float -> t;
+value tm_of_t : t -> tm;
+value create_tm : float -> float -> float -> float -> tm;
+value empty_tm : unit -> tm;
+value containsPoint : t -> Point.t -> bool;
+value points : t -> array Point.t;
+value intersection : t -> t -> option t;
+value join : t -> t -> t;
+value to_ints : t -> (int * int * int * int);
+value to_string : t -> string;
+value offset : t -> float -> float -> t;
+value isEmpty : t -> bool;
+value inside : t -> t -> bool;
+value cutOut : t -> t -> list t;
