@@ -142,7 +142,7 @@ dirty_hack1:
 
 ALLOBJSB=$(MOBJS) Debug.cmo $(MLCONTAINERSOBJSB) $(MLUTILSOBJSB) $(MLOBJSB)
 lightning.cma: MLDepend.$(PLATFORM) $(KAZMATH) $(ALLOBJSB) glutB dirty_hack1
-	$(OCAMLMKLIB) $(VERBOSE) -o lightning $(KAZMATH) $(ALLOBJSB) 
+	$(OCAMLMKLIB) $(VERBOSE) -o lightning $(KAZMATH) $(ALLOBJSB) $(LIBFLAGS)
 
 lightning.cmxa: MLDepend.$(PLATFORM) $(KAZMATH) \
 		$(MLCONTAINERSOBJS) $(MLUTILSOBJS) $(MOBJS) $(MLOBJS) glut
