@@ -12,6 +12,7 @@ OAUTH = ../src/social/oauth/oauth.cma
 $(TARGET).byte: $(MLFILES) $(TARGET).cmo 
 	$(OCAMLC) -custom -verbose -o test.byte  -g  \
 	-I ../src ../src/lightning.cma $(OAUTH) $(SOCIAL) $(MLFILES) ../src/social/facebook/fbconnect.cma $(TARGET).cmo \
+	-ccopt -lglut \
 	-package bigarray,unix,extlib,xmlm,ojson -linkpkg
 
 example.cmo: $(MLFILES)

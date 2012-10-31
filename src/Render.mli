@@ -121,3 +121,8 @@ module Image :
   end
 ;
 
+module GLPrimitives :
+  sig
+    external render : unit -> unit = "ml_glPrimitives_render" "noalloc";
+  end
+;

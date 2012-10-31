@@ -903,6 +903,15 @@ void ml_image_flip_tex_y(value image) {
 	tq->br.tex = tmp;
 }
 
+void ml_glPrimitives_render(value xs) {
+  PRINT_DEBUG("ml_glPrimitices_render");
+  glBegin(GL_LINES);
+  glColor3f(255.0,0,0);
+  glVertex2f(50,50);
+  glVertex2f(100,150);
+  glEnd();
+}
+
 void ml_image_render(value matrix, value program, value alpha, value image) {
 	//fprintf(stderr,"render image\n");
 	PRINT_DEBUG("RENDER IMAGE");

@@ -1032,6 +1032,7 @@ value tweens (stage:Stage.c) =
     (* Stage.addTween tweenAlpha; *)
     (* tweenX#animate bt#prop'x 300.; *)
     tweenY#animate bt#prop'y 600.;
+    tweenY#animate bt#prop'x 600.;
     (* tweenAlpha#animate bt#prop'alpha 0.5; *)
     (* tweenX#setOnComplete (fun () -> Stage.removeg tweenX); *)
     (* tweenY#setOnComplete (fun () -> Stage.removeTween tweenY); *)
@@ -1369,19 +1370,36 @@ value texture_atlas (stage:Stage.c) =
   let image = Image.create (TextureAtlas.subTexture atlas "/background_levels/1.png") in
   stage#addChild image;
 
+value glPrimitives (stage: Stage.c) = 
+  let xxx = GLPrimitives.create () in
+  ( xxx#setX 0.
+  ; xxx#setY 0.
+  ; xxx#setWidth 400.
+  ; xxx#setHeight 400.
+  ; debug "Adding child"
+  ; stage#addChild xxx )
+;
 let stage width height = 
   object(self)
     inherit Stage.c width height as super;
     value bgColor = 0xCCCCCC;
     initializer begin
-      debug "%s" (Render.get_gl_extensions ());
-
+            glPrimitives self;
+(*          let delay = 0.1 in
+            let twin = Tween.create delay in
+            let () = twin#setOnComplete (fun () -> debug "completed" ) in
+            let duration = 1.0 in
+            twin#process duration |> ignore *)
+(*          tweens self;
+            udid self;*)
+(*    debug "%s" (Render.get_gl_extensions ()); *)
+(*
       let timer = Timer.create ~repeatCount:1 2. "PZIDA" in
         (
           ignore(timer#addEventListener Timer.ev_TIMER_COMPLETE (fun _ _ _ -> pvr self));
           timer#start ()
         );
-
+*)
     (* Sound.init (); *)
 
 (*         let channel1 = Sound.createChannel (Sound.load "achievement1.caf")

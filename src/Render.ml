@@ -138,3 +138,6 @@ module Image = struct
 
 end;
 
+module GLPrimitives = struct
+  external render: unit -> unit = "ml_glPrimitives_render" "noalloc";
+end;
